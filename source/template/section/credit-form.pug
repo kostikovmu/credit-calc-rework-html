@@ -1,0 +1,42 @@
+.credit: .container
+  form.credit__form: .credit__inner
+    .credit__header Рассчитайте ежемесячный платеж и сумму к выплате
+    .credit__body
+      .credit__fieldset
+        .credit__group
+          .credit__field.credit__field_border
+            input.credit__input.credit__input-amount(required='' name='amount' id='credit__amount' placeholder='Сумма займа' readonly)
+            label.credit__label(for='credit__amount') Сумма займа
+          .credit__range.credit__range-amount
+          .credit__hint
+            .credit__hint-part От 50 000 ₽
+            .credit__hint-part до 1 000 000 ₽
+        .credit__group
+          .credit__field.credit__field_border
+            input.credit__input.credit__input-term(required='' name='term' id='credit__term' placeholder='Срок займа' readonly)
+            label.credit__label(for='credit__term') Срок займа
+          .credit__range.credit__range-term
+          .credit__hint
+            .credit__hint-part От 1 месяца
+            .credit__hint-part до 5 лет
+
+
+
+      .credit__result
+        .credit__result-key Ежемесячный платеж -
+        .credit__result-value 5300 ₽
+      .credit__fieldset
+        .credit__group
+          .credit__field
+            input.credit__input(required='' name='name' id='credit__name' placeholder='Иван')
+            label.credit__label(for='credit__name') Имя
+        .credit__group
+          .credit__field
+            input.credit__input.credit__input_phone(required='' type='tel' name='phone' id='credit__phone' placeholder='Телефон')
+            label.credit__label(for='credit__phone') Телефон
+
+    .credit__footer
+      label.checkbox-label Нажимая на кнопку я принимаю условия соглашения
+        input.checkbox(type='checkbox' required='' checked='')
+        span.checkmark
+      button.btn.btn-main.credit__btn Получить одобрение

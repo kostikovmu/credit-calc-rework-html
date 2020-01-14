@@ -1,0 +1,28 @@
+.btn {
+  border: none;
+  background-color: transparent;
+  user-select: none;
+  outline: none;
+  display: inline-block;
+  transition-duration: .3s;
+  cursor: pointer;
+
+  &-main {
+    padding: 15px 30px;
+    border-radius: 6px;
+    font-family: "Roboto", Sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #000;
+    background-color: #ffdd2d;
+
+    &:hover {
+      background-color: #ffdd2d;
+      color: #000;
+    }
+  }
+
+
+
+}
+
