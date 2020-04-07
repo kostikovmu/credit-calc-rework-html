@@ -1,0 +1,71 @@
+.ld {
+  width: 1em;
+  height: 1em;
+  position: relative;
+  display: inline-block;
+  margin-left: 3px;
+}
+
+.ld-spin {
+  animation: ld-spin 1s infinite linear;
+  transition: all .3s;
+  transition-timing-function: ease-in;
+
+  &:after {
+    content: " ";
+    display: block;
+    width: 2em;
+    height: 2em;
+    box-sizing: border-box;
+    transform-origin: 0 0;
+    transform: translateZ(0) scale(0.5);
+    backface-visibility: hidden;
+    border-radius: 50%;
+    border: .3em solid currentColor;
+    border-left-color: transparent;
+
+  }
+}
+
+.ld-arrow {
+
+  &:after {
+    content: " ";
+    display: block;
+    position: relative;
+    @include vertical-center();
+    width: 1em;
+    height: 1em;
+    border: solid black;
+    border-width: 0 .3em .3em 0;
+    box-sizing: border-box;
+    transform-origin: 0 0;
+    backface-visibility: hidden;
+    transform: translateZ(0) scale(0.5) rotate(-45deg);
+  }
+}
+
+.ld-complete {
+
+  &:after {
+    content: " ";
+    display: block;
+    position: relative;
+    left: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid #000000;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+  }
+}
+
+@keyframes ld-spin {
+  0% {
+    animation-timing-function: cubic-bezier(0.5856,0.0703,0.4143,0.9297);
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

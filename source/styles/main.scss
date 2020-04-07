@@ -1,14 +1,12 @@
-//@import "global/fonts";
+@import "components/smart-grid";
+
 @import "global/vars";
-@import "global/bases";
 @import "global/common";
 @import "global/mixins";
-//@import "global/sprite_svg";
-//@import "global/icons";
-@import "global/buttons";
 
 
-@import "companents/checkbox";
+@import "components/checkbox";
+@import "components/loader";
 
 @import "section/credit-form";
 @import "section/modal";

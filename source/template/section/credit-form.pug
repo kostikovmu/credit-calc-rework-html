@@ -1,42 +1,44 @@
-.credit: .container
-  form.credit__form: .credit__inner
-    .credit__header Рассчитайте ежемесячный платеж и сумму к выплате
-    .credit__body
-      .credit__fieldset
-        .credit__group
-          .credit__field.credit__field_border
-            input.credit__input.credit__input-amount(required='' name='amount' id='credit__amount' placeholder='Сумма займа' readonly)
-            label.credit__label(for='credit__amount') Сумма займа
-          .credit__range.credit__range-amount
-          .credit__hint
-            .credit__hint-part От 50 000 ₽
-            .credit__hint-part до 1 000 000 ₽
-        .credit__group
-          .credit__field.credit__field_border
-            input.credit__input.credit__input-term(required='' name='term' id='credit__term' placeholder='Срок займа' readonly)
-            label.credit__label(for='credit__term') Срок займа
-          .credit__range.credit__range-term
-          .credit__hint
-            .credit__hint-part От 1 месяца
-            .credit__hint-part до 5 лет
+.cc
+  form.cc__form: .cc__inner
+    .cc__header Рассчитайте ежемесячный платеж и сумму к выплате
+    .cc__body
+      .cc__fieldset
+        .cc__group
+          .cc__field.cc__field_border
+            input.cc__input.cc__input-amount(required='' name='amount' id='cc__amount' placeholder='Сумма займа' readonly)
+            label.cc__label(for='cc__amount') Сумма займа
+          .cc__range.cc__range-amount
+          .cc__hint
+            .cc__hint-part От 50 000 ₽
+            .cc__hint-part до 1 000 000 ₽
+        .cc__group
+          .cc__field.cc__field_border
+            input.cc__input.cc__input-term(required='' name='term' id='cc__term' placeholder='Срок займа' readonly)
+            label.cc__label(for='cc__term') Срок займа
+          .cc__range.cc__range-term
+          .cc__hint
+            .cc__hint-part От 1 месяца
+            .cc__hint-part до 5 лет
 
 
 
-      .credit__result
-        .credit__result-key Ежемесячный платеж -
-        .credit__result-value 5300 ₽
-      .credit__fieldset
-        .credit__group
-          .credit__field
-            input.credit__input(required='' name='name' id='credit__name' placeholder='Иван')
-            label.credit__label(for='credit__name') Имя
-        .credit__group
-          .credit__field
-            input.credit__input.credit__input_phone(required='' type='tel' name='phone' id='credit__phone' placeholder='Телефон')
-            label.credit__label(for='credit__phone') Телефон
+      .cc__result
+        .cc__result-key Ежемесячный платеж -
+        .cc__result-value 5300 ₽
+      .cc__fieldset
+        .cc__group
+          .cc__field
+            input.cc__input(required='' name='name' id='cc__name' placeholder='Иван')
+            label.cc__label(for='cc__name') Имя
+        .cc__group
+          .cc__field
+            input.cc__input.cc__input_phone(required='' type='tel' name='phone' id='cc__phone' placeholder='Телефон')
+            label.cc__label(for='cc__phone') Телефон
 
-    .credit__footer
-      label.checkbox-label Нажимая на кнопку я принимаю условия соглашения
+    .cc__footer
+      label.checkbox-label.cc__checkbox Я принимаю условия пользовательсого соглашения
         input.checkbox(type='checkbox' required='' checked='')
         span.checkmark
-      button.btn.btn-main.credit__btn Получить одобрение
+      button.cc__btn Получить одобрение
+        i.ld.ld-arrow.cc__btn-icon
+    .cc__status

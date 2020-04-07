@@ -17,6 +17,7 @@ const svgSprite       = require('gulp-svg-sprite');
 const svgmin          = require('gulp-svgmin');
 const cheerio         = require('gulp-cheerio');
 const replace         = require('gulp-replace');
+const smartgrid       = require('smart-grid');
 
 
 /* -------- Server  -------- */
@@ -61,7 +62,7 @@ gulp.task('js', function () {
     .pipe(sourcemaps.init())
     .pipe(concat('main.min.js'))
     .pipe(uglify())
-    .pipe(sourcemaps.write())
+    // .pipe(sourcemaps.write())
     .pipe(gulp.dest('build/js'));
 
 });
@@ -70,7 +71,7 @@ gulp.task('js', function () {
 gulp.task('libs', function() {
   gulp.src([
     // './node_modules/jquery/dist/jquery.min.js',
-    './node_modules/jquery-ui-dist/jquery-ui.min.js',
+    // './node_modules/jquery-ui-dist/jquery-ui.min.js',
     './node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js',
     './node_modules/inputmask/dist/min/jquery.inputmask.bundle.min.js'
   ])
@@ -158,6 +159,16 @@ gulp.task('sprite-svg', function () {
     .pipe(gulp.dest('build/'));
 });
 
+/* ------------ Smart-grid ------------- */
+gulp.task ('grid', function(done){
+  delete require.cache[require.resolve('./smartgrid.js')];
+
+  let settings = require('./smartgrid.js');
+  smartgrid('./source/styles/components', settings);
+  done();
+})
+
+
 /* ------------ Delete ------------- */
 gulp.task('clean', function del(cb) {
   return rimraf('build', cb);
@@ -209,7 +220,8 @@ gulp.task('watch', function() {
 gulp.task('default', gulp.series(
   'clean',
   // gulp.parallel('sprite-png', 'sprite-svg'),
-  gulp.parallel('templates:compile', 'styles:compile','js','libs', 'copy'),
+  gulp.parallel('grid', 'templates:compile',),
+  gulp.parallel('styles:compile','js','libs', 'copy'),
   gulp.parallel('watch', 'server')
   )
 );

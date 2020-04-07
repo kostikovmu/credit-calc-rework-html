@@ -4,121 +4,162 @@
 
   var declension = function(month) {
     var txt,
-      conunt = month % 10;
+      count = month % 10;
 
-    if( (month > 5 && month < 21) || conunt === 0 || (conunt >= 5 && conunt <= 9)) {
+    if( (month > 5 && month < 21) || count === 0 || (count >= 5 && count <= 9)) {
       txt = 'месяцев';
     }
-    else if(conunt === 1) {
+    else if(count === 1) {
       txt = 'месяц';
     }
-
     else {
       txt = 'месяца';
     }
 
     return txt;
   };
+  var declensionFrom = function(month) {
+    var txt,
+      count = month % 10;
+
+    if(count === 1 && month !== 11) {
+      txt = 'месяца';
+    }
+    else {
+      txt = 'месяцев';
+    }
+
+    return txt;
+  };
+
+
 
   var inputs = function () {
 
-    $('.credit__input_phone').each(function () {
+    $('.cc__input_phone').each(function () {
       $(this).inputmask({"mask": "+7 (999) 999-99-99"
       });
     });
 
 
-    $('.credit__input')
+    $('.cc__input')
       .focus(function () {
         if($(this).val() === '') {
-          $(this).next().addClass('credit__label_active');
+          $(this).next().addClass('cc__label_active');
         }
       })
       .blur(function () {
         if($(this).val() === '') {
-          $(this).next().removeClass('credit__label_active');
+          $(this).next().removeClass('cc__label_active');
         }
       })
 
       .each(function () {
         if($(this).val() !== '') {
-          $(this).next().addClass('credit__label_active');
+          $(this).next().addClass('cc__label_active');
         }
       });
   }
 
   var ajaxSend = function () {
 
-    $('.credit__form').submit(function(e){
+    $('.cc__form').submit(function(e){
       e.preventDefault();
+      var data = '&payment=' + $('.cc__result-value').text() + '&action=credit_calc'
       $.ajax({
-        url: '/wp-content/plugins/credit_calc/send.php',
+        url: creditCalc.ajaxUrl,
         type: 'post',
-        data: $(this).serialize() + '&payment=' + parseInt($('.credit__result-value').html()),
+        data: $(this).serialize() + data,
+        dataType: 'json',
         beforeSend: function(){
-          $('.overlay').fadeIn();
-          $('body').addClass('modal-open');
+          $('.cc__status').html('');
+          $('.cc__btn').prop('disabled', true).addClass('cc__btn_disabled');
+          $('.cc__btn-icon').removeClass('ld-arrow ld-complete').addClass('ld-spin')
         },
         success: function(response){
-          if (response==0){
-            $('.popup__title').html('Ошибка отправки!').css({'color':'#ff1a29'});
-            $('.popup__description').html('&nbsp;');
-            $('.popup').fadeIn();
-          }
-          else if (response==1){
-            $('.popup__title').html('Ваша заявка отправлена!').css({'color':'#0c0c0c'});
-            $('.popup__description').html('Менеджер свяжется с вами в ближайшее время!');
-            $('.popup').fadeIn();
-            $('.credit__input[name="name"], .credit__input[name="phone"]').val('');
-
-          }
+          setTimeout( function () {
+            if (response === 3){
+              $('.cc__status').html('Ошибка отправки!').css({'color':'#ff1a29'});
+            }
+            else if (response === 1){
+              $('.cc__status').html('Ваша заявка отправлена!').css({'color':'#1d2029'});
+              $('.cc__input[name="name"], .cc__input[name="phone"]').val('');
+              $('.cc__label-clear').removeClass('cc__label_active')
+            }
+            else if( response === 2) {
+              $('.cc__status').html('Ошибка проверки данных!').css({'color':'#ff1a29'});
+            }
+            else {
+              $('.cc__status').html('Не распознанная ошибка').css({'color':'#ff1a29'});
+              console.log(response);
+            }
+          }, 1000)
         },
         error: function(){
-          $('.popup__title').html('Ошибка, попробуйте еще раз!').css({'color':'#ff1a29'});
-          $('.popup__description').html('&nbsp;');
-          $('.popup').fadeIn();
+          $('.cc__status').html('Ошибка, попробуйте еще раз!').css({'color':'#ff1a29'});
+        },
+        complete: function (response) {
+          console.log(response);
+          setTimeout( function () {
+            $('.cc__btn-icon').removeClass('ld-spin').addClass('ld-complete')
+            $('.cc__btn').prop('disabled', false).removeClass('cc__btn_disabled');
+          }, 1000)
+
         }
       });
     });
-  }
+  };
 
   var calculator = function () {
-    $('.credit__input-amount').val('500000 ₽');
-    $('.credit__input-term').val('12 месяцев');
-    $('.credit__result-value').html('54166 ₽');
 
 
-    $('.credit__range-amount').slider({
+
+    var termStart = +creditCalc.term_start;
+    var amountStart = +creditCalc.amount_start;
+    var termStartVal = termStart + ' ' +  declension(termStart);
+    var rateStart = +creditCalc.rate / 100;
+    var resStart = Math.round(( amountStart + (amountStart * rateStart * termStart)) / termStart);
+
+    var termMin = 'От&nbsp;' + creditCalc.term_min + ' ' + declensionFrom(+creditCalc.term_min)
+    var termMax = 'до&nbsp;' + creditCalc.term_max + ' ' + declensionFrom(+creditCalc.term_max)
+    var currency = creditCalc.currency
+
+    $('.cc__input-amount').val(amountStart.toLocaleString('ru-RU') + ' ' + currency);
+    $('.cc__input-term').val(termStartVal);
+    $('.cc__result-value').html(resStart.toLocaleString('ru-RU') + ' ' + currency);
+    $('.cc__hint-part_min').html(termMin)
+    $('.cc__hint-part_max').html(termMax)
+
+
+    $('.cc__range-amount').slider({
       range: 'min',
-      step: 10000,
-      min: 50000,
-      max: 1000000,
-      value: 500000,
+      step: +creditCalc.step,
+      min: +creditCalc.amount_min,
+      max: +creditCalc.amount_max,
+      value: +creditCalc.amount_start,
       slide: function (e, ui) {
-        var term = $('.credit__range-term').slider('value'),
+        var term = $('.cc__range-term').slider('value'),
           amount = ui.value,
-          rate = MyAjax / 100,
-          // rate = 0.02,
+          rate = +creditCalc.rate / 100,
           res = Math.round(( amount + (amount * rate * term)) / term);
 
-        $('.credit__input-amount').val(amount + ' ₽');
-        $('.credit__result-value').html(res + ' ₽');
+        $('.cc__input-amount').val(amount.toLocaleString('ru-RU') + ' ' + currency);
+        $('.cc__result-value').html(res.toLocaleString('ru-RU') + ' ' + currency);
       }
     });
-    $('.credit__range-term').slider({
+    $('.cc__range-term').slider({
       range: 'min',
-      max: 60,
-      min: 1,
-      value: 12,
+      max: +creditCalc.term_max,
+      min: +creditCalc.term_min,
+      value: +creditCalc.term_start,
       slide: function (e, ui) {
-        var amount = $('.credit__range-amount').slider('value'),
+        var amount = $('.cc__range-amount').slider('value'),
           term = ui.value,
-          rate = MyAjax / 100,
-          // rate = 0.02,
+          rate = +creditCalc.rate / 100,
           res = Math.round(( amount + (amount * rate * term)) / term);
 
-        $('.credit__input-term').val(term + ' ' + declension(term));
-        $('.credit__result-value').html(res + ' ₽');
+        $('.cc__input-term').val(term + ' ' + declension(term));
+        $('.cc__result-value').html(res.toLocaleString('ru-RU') + ' ' + currency);
       }
     });
   }
@@ -134,7 +175,7 @@
 
   };
 
-  jQuery(document).ready(function($){
+  $(document).ready(function($){
     calculator();
     inputs();
     ajaxSend();
