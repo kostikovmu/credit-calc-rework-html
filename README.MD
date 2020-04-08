@@ -1,22 +1,4 @@
-# This is site template
-
-## Action plan
-
-### Common actions
-
-1. Cut images from layout.
-
-2. Add fonts and fill fonts.scss
-
-3. Fill vars.scss with fonts, colors, font-size.
-
-4. View all project to select repeat section and unique section.
-
-5. Fill common.scss (container, section title ...).
-
-6. Make template all pages.
-
-###
+# credit calc html
 
 ## How use
 
@@ -30,24 +12,16 @@
 
 * for https
 
-> git clone https://github.com/kostikovmu/portfolio.git
+> git clone https://github.com/kostikovmu/credit-calc-rework-html.git
 
 * for SSH key
 
-> git clone git@github.com:kostikovmu/portfolio.git
+> git clone git@github.com:kostikovmu/credit-calc-rework-html.git
 
 3. Install all dependencies
 
 > npm install
 
-4. Join your repository
+4. Build project
 
-> git remote set-url origin git@github.com:username/my-builder.git
-
-5. Check your remote repository
-
-> git remote -v
-
-6. Push you files in your repository
-
-> git push -u origin master
+> gulp
